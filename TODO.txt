@@ -1,0 +1,4 @@
+[] Tests
+[] Add express and JOI (param validation)
+[] Add auth middleware
+[] Finish user and auth routes (updateUser, deleteUser, login, logOut)

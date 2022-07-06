@@ -1,0 +1,35 @@
+{
+   "name": "travelguide",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "type": "module",
+   "scripts": {
+      "test": "LOG_DISABLED=false NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --no-cache",
+      "test:cov": "nyc mocha --parallel ./test/**/*.test.js",
+      "start": "node src/index.js",
+      "dev": "NODE_ENV=development nodemon src/index.js",
+      "run-migrations": "./node_modules/.bin/knex --esm migrate:latest --env development"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "dotenv": "^16.0.1",
+      "jsonwebtoken": "^8.5.1",
+      "knex": "^2.1.0",
+      "mysql2": "^2.3.3",
+      "pg": "^8.4.0",
+      "pino": "^8.0.0",
+      "pino-pretty": "^8.0.0",
+      "reflect-metadata": "^0.1.13"
+   },
+   "devDependencies": {
+      "@types/node": "^16.11.10",
+      "jest": "^28.1.2",
+      "nodemon": "^2.0.16",
+      "ts-node": "10.7.0",
+      "typescript": "4.5.2"
+   }
+}
