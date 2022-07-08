@@ -4,7 +4,7 @@ import MysqlKnexBase from "./knex/mysql/MysqlTypeORMBase.js"
 
 // Fake interface, contract to be followed
 export default class AuthBaseProvider extends MysqlKnexBase {
-  async authenticate(email, password) {
+  async findByCredentials(email, password) {
     throw new NotImplementedException(this.authenticate.name)
   }
 

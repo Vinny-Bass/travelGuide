@@ -15,7 +15,7 @@ export default class AuthService {
     )
   }
 
-  async authenticate(email, password) {
+  async login(email, password) {
     const encryptedPassword = await bcrypt.hash(password, 10)
     const authId = this.provider.findByCredentials(email, encryptedPassword)
 
