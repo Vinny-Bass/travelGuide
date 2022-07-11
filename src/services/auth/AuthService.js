@@ -1,6 +1,6 @@
 import 'dotenv/config'
-import UserAlreadyExistsError from '../../util/errors/userAlreadyExistsError.js'
-import UserNotExistsError from '../../util/errors/userNotExistsError.js'
+import UserAlreadyExistsError from '../../util/errors/authClientAlreadyExistsError.js'
+import UserNotExistsError from '../../util/errors/authClientNotExistsError.js'
 export default class AuthService {
   constructor({ authProvider, passwordEncrypter, tokenHandler }) {
     this.provider = authProvider
@@ -21,9 +21,9 @@ export default class AuthService {
   }
 
   async signUp(email, password) {
-    const authUser = await this.provider.findByEmail(email)
+    const authClient = await this.provider.findByEmail(email)
 
-    if (authUser) {
+    if (authClient) {
       throw new UserAlreadyExistsError(email)
     }
 

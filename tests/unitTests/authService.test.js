@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { jest, expect, describe, test, beforeEach, beforeAll } from '@jest/globals'
-import UserAlreadyExistsError from '../../src/util/errors/userAlreadyExistsError'
-import UserNotExistsError from '../../src/util/errors/userNotExistsError'
+import AuthClientAlredyExixtsError from '../../src/util/errors/authClientAlreadyExistsError'
+import AuthClientNotExistsError from '../../src/util/errors/authClientNotExistsError'
 import jwt from 'jsonwebtoken'
 import AuthService from '../../src/services/auth/AuthService.js'
 
@@ -35,7 +35,7 @@ describe('Auth Service Suite Tests', () => {
     jest.clearAllMocks()
   })
 
-  test('SignUp - Should return an UserAlredyExixts error if user email already exists', async () => {
+  test('SignUp - Should return an AuthClientAlredyExixts error if user email already exists', async () => {
     jest.spyOn(
       authService.provider,
       'findByEmail'
@@ -43,7 +43,7 @@ describe('Auth Service Suite Tests', () => {
 
     await expect(async () => {
       await authService.signUp(authClientMockData.email, authClientMockData.password)
-    }).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    }).rejects.toBeInstanceOf(AuthClientAlredyExixtsError)
   })
 
   test('SignUp - Should generate a valid jwt token when register', async () => {
@@ -73,7 +73,7 @@ describe('Auth Service Suite Tests', () => {
     expect(tokenData.email).toBe(email)
   })
 
-  test('Login - Should return an UserNotExists error when user not exists', async () => {
+  test('Login - Should return an AuthClientNotExists error when user not exists', async () => {
     jest.spyOn(
       authService.provider,
       'findByCredentials'
@@ -81,7 +81,7 @@ describe('Auth Service Suite Tests', () => {
 
     await expect(async () => {
       await authService.login(authClientMockData.email, authClientMockData.password)
-    }).rejects.toBeInstanceOf(UserNotExistsError)
+    }).rejects.toBeInstanceOf(AuthClientNotExistsError)
   })
 
   test('Login - Should return a valid jwt token when user exists', async () => {
