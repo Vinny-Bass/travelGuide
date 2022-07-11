@@ -6,10 +6,23 @@ export default class UserKnexProvider extends UserBaseProvider {
     this.table = 'user'
   }
 
-  async register(authId, firstName, lastName, age) {
+  async create(userData) {
     const knex = await super.connect()
 
-    const newUser = await knex(this.table).insert({ authId, firstName, lastName, age })
-    return newUser
+    const newUserId = await knex(this.table).insert(userData)
+    return newUserId[0]
+  }
+
+  async update(userId, userNewData) {
+    const knex = await super.connect()
+
+    const rowsAffected = await knex(this.table).update(userNewData).where('id', userId)
+    return rowsAffected
   }
 }
+
+// ; (async () => {
+//   const a = new UserKnexProvider()
+//   const b = await a.update(10, { age: 44 })
+//   console.log(b)
+// })()
