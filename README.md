@@ -1,7 +1,3 @@
-# Awesome Project Build with TypeORM
+# Travel Guide App
 
-Steps to run this project:
-
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+Readme Coming soon.
