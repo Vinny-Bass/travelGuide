@@ -11,14 +11,21 @@ export default class AuthKnexProvider extends AuthBaseProvider {
 
     const userAuth = await knex(this.table).select('*').where('email', email)
       .andWhere('password', password)
-      .returning('id')
+      .first()
+    return userAuth
+  }
+
+  async findByEmail(email) {
+    const knex = await super.connect()
+
+    const userAuth = await knex(this.table).select('*').where('email', email).first()
     return userAuth
   }
 
   async create(email, password) {
     const knex = await super.connect()
 
-    const newUserAuthId = await knex(this.table).insert({ email, password }).returning('id')
-    return newUserAuthId
+    const newUserAuthId = await knex(this.table).insert({ email, password })
+    return newUserAuthId[0]
   }
 }
