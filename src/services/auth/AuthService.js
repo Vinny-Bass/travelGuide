@@ -20,7 +20,7 @@ export default class AuthService {
     return token
   }
 
-  async register(email, password) {
+  async signUp(email, password) {
     const authUser = await this.provider.findByEmail(email)
 
     if (authUser) {

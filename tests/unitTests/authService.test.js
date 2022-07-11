@@ -35,18 +35,18 @@ describe('Auth Service Suite Tests', () => {
     jest.clearAllMocks()
   })
 
-  test('Register - Should return an UserAlredyExixts error if user email already exists', async () => {
+  test('SignUp - Should return an UserAlredyExixts error if user email already exists', async () => {
     jest.spyOn(
       authService.provider,
       'findByEmail'
     ).mockResolvedValue(authClientMockData)
 
     await expect(async () => {
-      await authService.register(authClientMockData.email, authClientMockData.password)
+      await authService.signUp(authClientMockData.email, authClientMockData.password)
     }).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
 
-  test('Register - Should generate a valid jwt token when register', async () => {
+  test('SignUp - Should generate a valid jwt token when register', async () => {
     const email = 'teste@teste.com'
     const password = '123456'
     const authId = authClientMockData.id
@@ -66,7 +66,7 @@ describe('Auth Service Suite Tests', () => {
       'generateToken'
     ).mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tIiwiaWF0IjoxNjU3NTQ4NDk2LCJleHAiOjE2NTc1NTU2OTZ9.mgfPO32sbC6KHU3tSbrC8_7PtGExwWHi8tM-iaXIYsk')
 
-    const { token } = await authService.register(email, password)
+    const { token } = await authService.signUp(email, password)
     const tokenData = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
 
     expect(tokenData.authId).toBe(authId)
