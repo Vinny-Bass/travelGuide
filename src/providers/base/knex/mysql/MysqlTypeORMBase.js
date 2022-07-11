@@ -1,5 +1,5 @@
+import 'dotenv/config'
 import knex from "knex"
-
 export default class MysqlKnexBase {
   async connect() {
     return knex({

@@ -8,7 +8,7 @@
       "test": "LOG_DISABLED=false NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --no-cache",
       "test:cov": "nyc mocha --parallel ./test/**/*.test.js",
       "start": "node src/index.js",
-      "dev": "NODE_ENV=development nodemon src/index.js",
+      "dev": "NODE_ENV=development nodemon --require dotenv/config src/index.js",
       "run-migrations": "./node_modules/.bin/knex --esm migrate:latest --env development"
    },
    "keywords": [],

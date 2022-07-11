@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { jest, expect, describe, test, beforeEach, beforeAll } from '@jest/globals'
-import bcrypt from 'bcryptjs/dist/bcrypt'
+import UserAlreadyExistsError from '../../src/util/errors/userAlreadyExistsError'
+import UserNotExistsError from '../../src/util/errors/userNotExistsError'
 import jwt from 'jsonwebtoken'
 import AuthService from '../../src/services/auth/AuthService.js'
 
@@ -17,7 +18,8 @@ describe('Auth Service Suite Tests', () => {
     authService = new AuthService({
       authProvider: {
         create: jest.fn(),
-        findByCredentials: jest.fn()
+        findByCredentials: jest.fn(),
+        findByEmail: jest.fn()
       },
       passwordEncrypter: {
         encrypt: jest.fn()
@@ -33,10 +35,26 @@ describe('Auth Service Suite Tests', () => {
     jest.clearAllMocks()
   })
 
+  test('Register - Should return an UserAlredyExixts error if user email already exists', async () => {
+    jest.spyOn(
+      authService.provider,
+      'findByEmail'
+    ).mockResolvedValue(authClientMockData)
+
+    await expect(async () => {
+      await authService.register(authClientMockData.email, authClientMockData.password)
+    }).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
   test('Register - Should generate a valid jwt token when register', async () => {
     const email = 'teste@teste.com'
     const password = '123456'
     const authId = authClientMockData.id
+
+    jest.spyOn(
+      authService.provider,
+      'findByEmail'
+    ).mockResolvedValue()
 
     jest.spyOn(
       authService.provider,
@@ -55,7 +73,16 @@ describe('Auth Service Suite Tests', () => {
     expect(tokenData.email).toBe(email)
   })
 
-  test.todo('Authenticate - Should return a valid token when user exists')
+  test('Login - Should return an UserNotExists error when user not exists', async () => {
+    jest.spyOn(
+      authService.provider,
+      'findByCredentials'
+    ).mockResolvedValue()
 
-  test.todo('Authenticate - Should return an jwt invalid token error when user not exists')
+    await expect(async () => {
+      await authService.login(authClientMockData.email, authClientMockData.password)
+    }).rejects.toBeInstanceOf(UserNotExistsError)
+  })
+
+  test.todo('Login - Should return a valid token when user exists')
 })

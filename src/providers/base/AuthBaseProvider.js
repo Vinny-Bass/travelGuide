@@ -8,6 +8,10 @@ export default class AuthBaseProvider extends MysqlKnexBase {
     throw new NotImplementedException(this.findByCredentials.name)
   }
 
+  async findByEmail(email) {
+    throw new NotImplementedException(this.findByEmail.name)
+  }
+
   async create(email, password) {
     throw new NotImplementedException(this.create.name)
   }
