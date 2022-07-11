@@ -8,7 +8,7 @@ export default class AuthService {
   }
 
   async login(email, password) {
-    const encryptedPassword = await passwordEncrypter.encrypt(password)
+    const encryptedPassword = await this.passwordEncrypter.encrypt(password)
     const authId = this.provider.findByCredentials(email, encryptedPassword)
 
     const token = this.tokenHandler.generateToken({ authId, email })
@@ -16,10 +16,10 @@ export default class AuthService {
   }
 
   async register(email, password) {
-    const encryptedPassword = await passwordEncrypter.encrypt(password)
+    const encryptedPassword = await this.passwordEncrypter.encrypt(password)
     const authId = await this.provider.create(email, encryptedPassword)
 
-    const { token } = this.tokenHandler.generateToken({ authId, email })
+    const token = this.tokenHandler.generateToken({ authId, email })
     return { token, authId }
   }
 }

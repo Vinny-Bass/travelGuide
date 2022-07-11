@@ -16,8 +16,14 @@ describe('Auth Service Suite Tests', () => {
   beforeAll(() => {
     authService = new AuthService({
       authProvider: {
-        register: jest.fn(),
+        create: jest.fn(),
         findByCredentials: jest.fn()
+      },
+      passwordEncrypter: {
+        encrypt: jest.fn()
+      },
+      tokenHandler: {
+        generateToken: jest.fn()
       }
     })
   })
@@ -27,27 +33,26 @@ describe('Auth Service Suite Tests', () => {
     jest.clearAllMocks()
   })
 
-  test('Register - Should criptography the password and generate a valid jwt token when register', async () => {
+  test('Register - Should generate a valid jwt token when register', async () => {
     const email = 'teste@teste.com'
     const password = '123456'
     const authId = authClientMockData.id
 
     jest.spyOn(
-      bcrypt,
-      'hash'
-    )
-
-    jest.spyOn(
       authService.provider,
-      'register'
+      'create'
     ).mockResolvedValue(authId)
 
+    jest.spyOn(
+      authService.tokenHandler,
+      'generateToken'
+    ).mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tIiwiaWF0IjoxNjU3NTQ4NDk2LCJleHAiOjE2NTc1NTU2OTZ9.mgfPO32sbC6KHU3tSbrC8_7PtGExwWHi8tM-iaXIYsk')
+
     const { token } = await authService.register(email, password)
+    const tokenData = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
 
-    expect(bcrypt.hash).toBeCalledTimes(1)
-    expect(bcrypt.hash).toBeCalledWith(password, 10)
-
-    //Validar a chamada da funcao estatica generateAuthToken
+    expect(tokenData.authId).toBe(authId)
+    expect(tokenData.email).toBe(email)
   })
 
   test.todo('Authenticate - Should return a valid token when user exists')
