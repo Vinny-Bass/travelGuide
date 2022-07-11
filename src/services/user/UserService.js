@@ -29,4 +29,20 @@ export default class UserService {
     const rowsAffected = await this.provider.update(userId, userData)
     return rowsAffected
   }
+
+  async get(userId) {
+    const user = await this.provider.findById(userId)
+    return user
+  }
+
+  async delete(userId) {
+    const user = await this.provider.findById(userId)
+
+    if (!user) {
+      throw new UnexistentUserError(userId)
+    }
+
+    const rowsAffected = await this.provider.update(userId)
+    return rowsAffected
+  }
 }

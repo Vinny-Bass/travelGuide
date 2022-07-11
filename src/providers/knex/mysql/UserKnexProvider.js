@@ -19,10 +19,18 @@ export default class UserKnexProvider extends UserBaseProvider {
     const rowsAffected = await knex(this.table).update(userNewData).where('id', userId)
     return rowsAffected
   }
-}
 
-// ; (async () => {
-//   const a = new UserKnexProvider()
-//   const b = await a.update(10, { age: 44 })
-//   console.log(b)
-// })()
+  async findById(id) {
+    const knex = await super.connect()
+
+    const user = await knex(this.table).select('*').where('id', id).first()
+    return user
+  }
+
+  async delete(id) {
+    const knex = await super.connect()
+
+    const rowsAffected = await knex(this.table).del().where('id', id)
+    return rowsAffected
+  }
+}
