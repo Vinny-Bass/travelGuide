@@ -15,7 +15,7 @@ export default class AuthKnexProvider extends AuthBaseProvider {
     return userAuth
   }
 
-  async register(email, password) {
+  async create(email, password) {
     const knex = await super.connect()
 
     const newUserAuthId = await knex(this.table).insert({ email, password }).returning('id')

@@ -17,7 +17,7 @@ export default class AuthService {
 
   async register(email, password) {
     const encryptedPassword = await passwordEncrypter.encrypt(password)
-    const authId = await this.provider.register(email, encryptedPassword)
+    const authId = await this.provider.create(email, encryptedPassword)
 
     const { token } = this.tokenHandler.generateToken({ authId, email })
     return { token, authId }
