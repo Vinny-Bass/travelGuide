@@ -46,32 +46,30 @@ describe('Auth Service Suite Tests', () => {
     }).rejects.toBeInstanceOf(AuthClientAlredyExixtsError)
   })
 
-  // test('SignUp - Should generate a valid jwt token when register', async () => {
-  //   const email = 'teste@teste.com'
-  //   const password = '123456'
-  //   const authId = authClientMockData.id
+  test('SignUp - Should generate a valid jwt token when register', async () => {
+    const email = 'teste@teste.com'
+    const password = '123456'
 
-  //   jest.spyOn(
-  //     authService.provider,
-  //     'findByEmail'
-  //   ).mockResolvedValue()
+    jest.spyOn(
+      authService.provider,
+      'findByEmail'
+    ).mockResolvedValue()
 
-  //   jest.spyOn(
-  //     authService.provider,
-  //     'create'
-  //   ).mockResolvedValue(authId)
+    jest.spyOn(
+      authService.provider,
+      'create'
+    ).mockResolvedValue(authClientMockData.id)
 
-  //   jest.spyOn(
-  //     authService.tokenHandler,
-  //     'generateToken'
-  //   ).mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tIiwiaWF0IjoxNjU3NTQ4NDk2LCJleHAiOjE2NTc1NTU2OTZ9.mgfPO32sbC6KHU3tSbrC8_7PtGExwWHi8tM-iaXIYsk')
+    jest.spyOn(
+      authService.tokenHandler,
+      'generateToken'
+    ).mockReturnValue('valid token')
 
-  //   const { token } = await authService.signUp(email, password)
-  //   const tokenData = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
+    const { authId, token } = await authService.signUp(email, password)
 
-  //   expect(tokenData.authId).toBe(authId)
-  //   expect(tokenData.email).toBe(email)
-  // })
+    expect(authId).toBe(authClientMockData.id)
+    expect(token).not.toBe(null)
+  })
 
   test('Login - Should return an AuthClientNotExists error when user not exists', async () => {
     jest.spyOn(
@@ -84,16 +82,19 @@ describe('Auth Service Suite Tests', () => {
     }).rejects.toBeInstanceOf(AuthClientNotExistsError)
   })
 
-  // test('Login - Should return a valid jwt token when user exists', async () => {
-  //   jest.spyOn(
-  //     authService.provider,
-  //     'findByCredentials'
-  //   ).mockResolvedValue(authClientMockData.id)
+  test('Login - Should return a valid jwt token when user exists', async () => {
+    jest.spyOn(
+      authService.provider,
+      'findByCredentials'
+    ).mockResolvedValue(authClientMockData.id)
 
-  //   const token = await authService.login(authClientMockData.email, authClientMockData.password)
-  //   const tokenData = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
+    jest.spyOn(
+      authService.tokenHandler,
+      'generateToken'
+    ).mockReturnValue('valid token')
 
-  //   expect(tokenData.authId).toBe(authClientMockData.id)
-  //   expect(tokenData.email).toBe(authClientMockData.email)
-  // })
+    const token = await authService.login(authClientMockData.email, authClientMockData.password)
+
+    expect(token).not.toBe(null)
+  })
 })
